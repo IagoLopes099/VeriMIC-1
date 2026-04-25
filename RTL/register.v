@@ -10,12 +10,12 @@ module register #(
 
     always @(posedge clk, negedge rst) begin
 
-        data_out <= {{WIDTH}1'b0}
+        data_out <= {WIDTH{1'b0}};
 
         if(!rst)
-            4'b0z : data_out <= {WIDTH{1'b0}};
+            data_out <= {WIDTH{1'b0}};
         else if(load)
-            4'b11 : data_out <= data_in;
+            data_out <= data_in;
 
     end
 
