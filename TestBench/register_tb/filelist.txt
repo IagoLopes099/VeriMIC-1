@@ -1,0 +1,4 @@
+reg_if.sv
+../../RTL/register.v
+register_tb.sv
+reg_top.sv
