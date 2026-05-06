@@ -1,0 +1,75 @@
+xrun: 25.03-s001: (c) Copyright 1995-2025 Cadence Design Systems, Inc.
+TOOL:	xrun	25.03-s001: Started on May 02, 2026 at 15:52:01 EDT
+xrun
+	-f filelist.txt
+		reg_if.sv
+		register.v
+		register_tb.sv
+		reg_top.sv
+file: reg_if.sv
+	interface worklib.reg_if:sv
+		errors: 0, warnings: 0
+file: register.v
+	module worklib.register:v
+		errors: 0, warnings: 0
+file: register_tb.sv
+	module worklib.register_tb:sv
+		errors: 0, warnings: 0
+file: reg_top.sv
+	module worklib.reg_top:sv
+		errors: 0, warnings: 0
+		Caching library 'worklib' ....... Done
+	Elaborating the design hierarchy:
+	Top level design units:
+		reg_top
+	Building instance overlay tables: .................... Done
+	Generating native compiled code:
+		worklib.register_tb:sv <0x1f88fdc5>
+			streams:   4, words:  7847
+		worklib.register:v <0x6ebf01fe>
+			streams:   2, words:   409
+		worklib.reg_top:sv <0x5628bd72>
+			streams:   7, words:  1331
+	Building instance specific data structures.
+	Loading native compiled code:     .................... Done
+	Design hierarchy summary:
+		             Instances  Unique
+		Modules:             3       3
+		Interfaces:          1       1
+		Registers:           7       7
+		Scalar wires:        3       -
+		Vectored wires:      3       -
+		Always blocks:       3       3
+		Initial blocks:      2       2
+		Pseudo assignments:  5       -
+		Process Clocks:      2       1
+	Writing initial simulation snapshot: worklib.reg_top:sv
+Loading snapshot worklib.reg_top:sv .................... Done
+SVSEED default: 1
+xcelium> source /xcelium25.03/tools/xcelium/files/xmsimrc
+xcelium> run
+At a time: 300, rst = 1, load = 0, data_in = 10100111010011011110101000011101, data_out = 00000000000000000000000000000000
+At a time: 500, rst = 1, load = 1, data_in = 11100101011011100111000001101111, data_out = 11100101011011100111000001101111
+At a time: 700, rst = 1, load = 1, data_in = 00011010011011111111001110101000, data_out = 00011010011011111111001110101000
+At a time: 900, rst = 1, load = 0, data_in = 01010000101111101001001100110010, data_out = 00011010011011111111001110101000
+At a time: 1100, rst = 1, load = 0, data_in = 01001111001111011011001001001101, data_out = 00011010011011111111001110101000
+At a time: 1300, rst = 1, load = 0, data_in = 10110100000010001011010111101011, data_out = 00011010011011111111001110101000
+At a time: 1500, rst = 1, load = 0, data_in = 01001011010010010001010011001011, data_out = 00011010011011111111001110101000
+At a time: 1700, rst = 1, load = 0, data_in = 01010111000110100000101100110111, data_out = 00011010011011111111001110101000
+At a time: 1900, rst = 1, load = 1, data_in = 00010001110000011001101001110100, data_out = 00010001110000011001101001110100
+At a time: 2100, rst = 1, load = 1, data_in = 10011111100001000110100100001010, data_out = 10011111100001000110100100001010
+At a time: 2300, rst = 1, load = 1, data_in = 10010010111101110000101000111100, data_out = 10010010111101110000101000111100
+At a time: 2500, rst = 1, load = 0, data_in = 11001100100111011001101111000111, data_out = 10010010111101110000101000111100
+At a time: 2700, rst = 1, load = 0, data_in = 11011101010010100111100110000000, data_out = 10010010111101110000101000111100
+At a time: 2900, rst = 1, load = 1, data_in = 01001101010010110110010111001101, data_out = 01001101010010110110010111001101
+At a time: 3100, rst = 1, load = 0, data_in = 01101001111000000001100001111010, data_out = 01001101010010110110010111001101
+At a time: 3300, rst = 1, load = 1, data_in = 11000010011001000010000111110111, data_out = 11000010011001000010000111110111
+At a time: 3500, rst = 1, load = 1, data_in = 11110010111000100010100011011001, data_out = 11110010111000100010100011011001
+At a time: 3700, rst = 1, load = 0, data_in = 10010010101001001000010101001110, data_out = 11110010111000100010100011011001
+At a time: 3900, rst = 1, load = 0, data_in = 01100100111010111000111011011100, data_out = 11110010111000100010100011011001
+At a time: 4100, rst = 1, load = 1, data_in = 10111000110110110001100101010111, data_out = 10111000110110110001100101010111
+Test Passed
+Simulation complete via $finish(1) at time 4100 NS + 1
+./register_tb.sv:52 		$finish;
+xcelium> exit
+TOOL:	xrun	25.03-s001: Exiting on May 02, 2026 at 15:52:02 EDT  (total: 00:00:01)

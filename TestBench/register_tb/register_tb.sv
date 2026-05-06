@@ -1,11 +1,13 @@
 
 module register_tb #(
     parameter WIDTH = 32
-)(virtual reg_if regif);
+)(
+	reg_if regif
+);
 
 	logic [WIDTH-1:0] expected;
 
-	always @(posedge regif.clk) begin // Golden reference model
+	always @(posedge regif.clk) begin : golden_model_reference
 		if(!regif.rst)
 			expected <= 0;
 		else if(regif.load)

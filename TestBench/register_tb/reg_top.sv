@@ -9,7 +9,7 @@ module reg_top; // FILE to instantiate the TestBench and DUT through the an inte
 
     reg_if #( .WIDTH(WIDTH_TOP) ) inter (clk_top); // interface
 
-    register #( .WIDTH(WIDTH_TOP) ) register_inst (
+    register #( .WIDTH(WIDTH_TOP) ) register_inst ( // DUT
         .data_in(inter.data_in),
         .clk(inter.clk),
         .rst(inter.rst),

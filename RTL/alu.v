@@ -1,11 +1,11 @@
 module alu #(
     parameter WIDTH = 32
 )(
-    input wire inv_a, en_a, en_b, inc, carry_in,
-    input wire [1:0] sel, //01
-    input wire [WIDTH-1:0] in_a, in_b,
-    output reg [WIDTH-1:0] alu_out,
-    output reg carry_out, is_zero, is_neg
+    input wire inv_a, en_a, en_b, inc,
+    input wire [1:0] sel,
+    input wire signed [WIDTH-1:0] in_a, in_b,
+    output reg signed [WIDTH-1:0] alu_out,
+    output reg overflow, is_zero, is_neg
 );
 
     reg [WIDTH:0] temporary_sum;   
@@ -18,14 +18,11 @@ module alu #(
         a = (!inv_a) ? a : ~a; 
 
         b = (en_b) ? in_b : {WIDTH{1'b0}};
-        carry_in_temp = (!inc) ? carry_in : (carry_in + 1'b1); 
+        carry_in_temp = (inc) ? 1'b1 : 1'b0; 
 
     end
 
-    always @(*) begin : alu_logic_operations // change later to perform signed operations
-        carry_out = 1'b0;
-        is_zero = 1'b0;
-        is_neg = 1'b0;
+    always @(*) begin : alu_logic_operations
 
         casez({sel[0], sel[1]}) 
 
@@ -44,15 +41,13 @@ module alu #(
             2'b11 : begin : A_plus_B // change later to match exactly the especifications behavior
                 temporary_sum = a + b + carry_in_temp;
                 alu_out = temporary_sum[WIDTH-1:0];
-                carry_out = temporary_sum[WIDTH];
+                overflow = temporary_sum[WIDTH];
             end 
-
         endcase 
 
-        if(alu_out == 0)
-            is_zero = 1'b1;
+        is_zero = (alu_out == 0) ? 1'b1 : 1'b0;
+        is_neg = (alu_out[WIDTH]) ? 1'b1 : 1'b0;
 
-        // expression to define is_neg
     end
 
 endmodule
