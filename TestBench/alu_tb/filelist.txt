@@ -1,0 +1,4 @@
+alu_if.sv
+../../RTL/alu.v
+alu_tb.sv
+alu_top.sv
