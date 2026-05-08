@@ -1,0 +1,4 @@
+shifter_if.sv
+../../RTL/shifter.v
+shifter_tb.sv
+shifter_top.sv
