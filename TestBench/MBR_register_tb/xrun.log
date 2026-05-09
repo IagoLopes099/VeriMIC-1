@@ -1,0 +1,95 @@
+xrun: 25.03-s001: (c) Copyright 1995-2025 Cadence Design Systems, Inc.
+TOOL:	xrun	25.03-s001: Started on May 08, 2026 at 21:01:13 EDT
+xrun
+	-f filelist.txt
+		MBR_if.sv
+		registerMBR.v
+		MBR_tb.sv
+		MBR_top.sv
+file: MBR_if.sv
+	interface worklib.MBR_if:sv
+		errors: 0, warnings: 0
+file: registerMBR.v
+	module worklib.registerMBR:v
+		errors: 0, warnings: 0
+file: MBR_tb.sv
+	module worklib.MBR_tb:sv
+		errors: 0, warnings: 0
+file: MBR_top.sv
+	module worklib.MBR_top:sv
+		errors: 0, warnings: 0
+		Caching library 'worklib' ....... Done
+	Elaborating the design hierarchy:
+	Top level design units:
+		MBR_top
+	Building instance overlay tables: .................... Done
+	Generating native compiled code:
+		worklib.MBR_tb:sv <0x540fad1d>
+			streams:   7, words: 10194
+		worklib.registerMBR:v <0x331034cb>
+			streams:   3, words:   867
+		worklib.MBR_top:sv <0x2b11beec>
+			streams:   8, words:  1643
+	Building instance specific data structures.
+	Loading native compiled code:     .................... Done
+	Design hierarchy summary:
+		              Instances  Unique
+		Modules:              3       3
+		Interfaces:           1       1
+		Registers:           10      10
+		Scalar wires:         3       -
+		Vectored wires:       5       -
+		Always blocks:        3       3
+		Initial blocks:       2       2
+		Pseudo assignments:   6       -
+		Process Clocks:       2       1
+	Writing initial simulation snapshot: worklib.MBR_top:sv
+Loading snapshot worklib.MBR_top:sv .................... Done
+SVSEED default: 1
+xcelium> source /xcelium25.03/tools/xcelium/files/xmsimrc
+xcelium> run
+Data_in : 00101000, rst : 1, load : 1, data_out1 : 00000000000000000000000000101000, data_out2 : 00000000000000000000000000000000
+Data_in : 01000010, rst : 1, load : 1, data_out1 : 00000000000000000000000001000010, data_out2 : 00000000000000000000000000000000
+Data_in : 01011101, rst : 1, load : 0, data_out1 : 00000000000000000000000001000010, data_out2 : 00000000000000000000000001011101
+Data_in : 00111111, rst : 1, load : 0, data_out1 : 00000000000000000000000001000010, data_out2 : 00000000000000000000000000111111
+Data_in : 01101001, rst : 1, load : 0, data_out1 : 00000000000000000000000001000010, data_out2 : 00000000000000000000000001101001
+Data_in : 01100001, rst : 1, load : 0, data_out1 : 00000000000000000000000001000010, data_out2 : 00000000000000000000000001100001
+Data_in : 01011000, rst : 1, load : 1, data_out1 : 00000000000000000000000001011000, data_out2 : 00000000000000000000000001100001
+Data_in : 01010001, rst : 1, load : 0, data_out1 : 00000000000000000000000001011000, data_out2 : 00000000000000000000000001010001
+Data_in : 11010001, rst : 1, load : 0, data_out1 : 00000000000000000000000001011000, data_out2 : 11111111111111111111111111010001
+Data_in : 00011110, rst : 1, load : 0, data_out1 : 00000000000000000000000001011000, data_out2 : 00000000000000000000000000011110
+Data_in : 01111000, rst : 1, load : 0, data_out1 : 00000000000000000000000001011000, data_out2 : 00000000000000000000000001111000
+Data_in : 00101010, rst : 1, load : 1, data_out1 : 00000000000000000000000000101010, data_out2 : 00000000000000000000000001111000
+Data_in : 10000011, rst : 1, load : 1, data_out1 : 00000000000000000000000010000011, data_out2 : 00000000000000000000000001111000
+Data_in : 10110100, rst : 1, load : 0, data_out1 : 00000000000000000000000010000011, data_out2 : 11111111111111111111111110110100
+Data_in : 11000100, rst : 1, load : 0, data_out1 : 00000000000000000000000010000011, data_out2 : 11111111111111111111111111000100
+Data_in : 10010111, rst : 1, load : 0, data_out1 : 00000000000000000000000010000011, data_out2 : 11111111111111111111111110010111
+Data_in : 01111000, rst : 1, load : 1, data_out1 : 00000000000000000000000001111000, data_out2 : 11111111111111111111111110010111
+Data_in : 00111111, rst : 1, load : 1, data_out1 : 00000000000000000000000000111111, data_out2 : 11111111111111111111111110010111
+Data_in : 01001111, rst : 1, load : 0, data_out1 : 00000000000000000000000000111111, data_out2 : 00000000000000000000000001001111
+Data_in : 01110110, rst : 1, load : 1, data_out1 : 00000000000000000000000001110110, data_out2 : 00000000000000000000000001001111
+Data_in : 11000100, rst : 1, load : 1, data_out1 : 00000000000000000000000011000100, data_out2 : 00000000000000000000000001001111
+Data_in : 11110101, rst : 1, load : 1, data_out1 : 00000000000000000000000011110101, data_out2 : 00000000000000000000000001001111
+Data_in : 11100110, rst : 1, load : 1, data_out1 : 00000000000000000000000011100110, data_out2 : 00000000000000000000000001001111
+Data_in : 01100001, rst : 1, load : 0, data_out1 : 00000000000000000000000011100110, data_out2 : 00000000000000000000000001100001
+Data_in : 00000100, rst : 1, load : 1, data_out1 : 00000000000000000000000000000100, data_out2 : 00000000000000000000000001100001
+Data_in : 11111000, rst : 1, load : 1, data_out1 : 00000000000000000000000011111000, data_out2 : 00000000000000000000000001100001
+Data_in : 11110011, rst : 1, load : 0, data_out1 : 00000000000000000000000011111000, data_out2 : 11111111111111111111111111110011
+Data_in : 01000001, rst : 1, load : 0, data_out1 : 00000000000000000000000011111000, data_out2 : 00000000000000000000000001000001
+Data_in : 00011100, rst : 1, load : 1, data_out1 : 00000000000000000000000000011100, data_out2 : 00000000000000000000000001000001
+Data_in : 11111000, rst : 1, load : 0, data_out1 : 00000000000000000000000000011100, data_out2 : 11111111111111111111111111111000
+Data_in : 01110110, rst : 1, load : 0, data_out1 : 00000000000000000000000000011100, data_out2 : 00000000000000000000000001110110
+Data_in : 11000000, rst : 1, load : 1, data_out1 : 00000000000000000000000011000000, data_out2 : 00000000000000000000000001110110
+Data_in : 10001101, rst : 1, load : 1, data_out1 : 00000000000000000000000010001101, data_out2 : 00000000000000000000000001110110
+Data_in : 00111101, rst : 1, load : 1, data_out1 : 00000000000000000000000000111101, data_out2 : 00000000000000000000000001110110
+Data_in : 00111100, rst : 1, load : 1, data_out1 : 00000000000000000000000000111100, data_out2 : 00000000000000000000000001110110
+Data_in : 01001100, rst : 1, load : 0, data_out1 : 00000000000000000000000000111100, data_out2 : 00000000000000000000000001001100
+Data_in : 10001110, rst : 1, load : 1, data_out1 : 00000000000000000000000010001110, data_out2 : 00000000000000000000000001001100
+Data_in : 01010100, rst : 1, load : 0, data_out1 : 00000000000000000000000010001110, data_out2 : 00000000000000000000000001010100
+Data_in : 01100001, rst : 1, load : 1, data_out1 : 00000000000000000000000001100001, data_out2 : 00000000000000000000000001010100
+Data_in : 10010101, rst : 1, load : 1, data_out1 : 00000000000000000000000010010101, data_out2 : 00000000000000000000000001010100
+Test Passed
+Simulation complete via $finish(1) at time 8100 NS + 1
+./MBR_tb.sv:78         $finish;
+xcelium> exit
+TOOL:	xrun	25.03-s001: Exiting on May 08, 2026 at 21:01:14 EDT  (total: 00:00:01)

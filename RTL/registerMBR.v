@@ -9,7 +9,7 @@ module registerMBR #(
     output reg [WIDTH-1:0] data_out1 , data_out2
 );
 
-    always @(posedge clk, negedge rst) begin
+    always @(posedge clk) begin
 
         casez({!rst,load})
             2'b1z : begin
