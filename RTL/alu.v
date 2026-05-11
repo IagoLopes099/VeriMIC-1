@@ -46,7 +46,7 @@ module alu #(
         endcase 
 
         is_zero = (alu_out == 0) ? 1'b1 : 1'b0;
-        is_neg = (alu_out[WIDTH]) ? 1'b1 : 1'b0;
+        is_neg = (alu_out[WIDTH-1]) ? 1'b1 : 1'b0;
 
     end
 
