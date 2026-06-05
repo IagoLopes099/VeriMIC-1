@@ -15,10 +15,6 @@ module MBR_tb #(
         end
         else if (MBRif.load) begin
             expected1 <= {{WIDTH-WORD{1'b0}},MBRif.data_in};
-            expected2 <= MBRif.data_out2;
-        end
-        else if (!MBRif.load) begin
-            expected1 <= MBRif.data_out1;
             expected2 <= {{WIDTH-WORD{MBRif.data_in[WORD-1]}},MBRif.data_in};
         end
         else begin
