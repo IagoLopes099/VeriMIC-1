@@ -12,6 +12,7 @@ module registerFile_top;
     registerFile #( .WIDTH(WIDTH_TOP), .WORD(WORD_TOP)) regFile_inst ( // DUT
         .write(inter.write),
         .read(inter.read),
+        .fetch(inter.fetch),
         .memory_bus_in_MBR(inter.memory_bus_in_MBR),
         .memory_bus_in_MDR(inter.memory_bus_in_MDR),
         .memory_bus_out_MDR(inter.memory_bus_out_MDR),

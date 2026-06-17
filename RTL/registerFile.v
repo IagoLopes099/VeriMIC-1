@@ -5,16 +5,16 @@ module registerFile #(
     parameter WIDTH = 32,
     parameter WORD = 8
 )(
-
+ 
     // memory
-    input write ,read,
+    input write ,read, fetch,
     input [WORD-1:0] memory_bus_in_MBR, 
     input [WIDTH-1:0] memory_bus_in_MDR,
     output [WIDTH-1:0] memory_bus_out_MDR,
     output [WIDTH-1:0] memory_bus_out_MAR,
     output [WIDTH-1:0] memory_bus_out_PC,
 
-
+    // decoder and selector (B AND C BUS)
     input wire clk,
     input wire [9:0] rst,
     input wire [3:0] sel_bus_b,
@@ -23,20 +23,19 @@ module registerFile #(
     output reg [WIDTH-1:0] bus_b,
     output [WIDTH-1:0] bus_a
 );  
+
     // CONECTIONS WIRE TO AND FROM MDR REGISTER
-    wire [WIDTH-1:0] out_mem_MDR;
-    reg [WIDTH-1:0] in_mem_MDR;
+    wire [WIDTH-1:0] out_MDR;
+    wire [WIDTH-1:0] in_MDR;
+
+    // CONECTIONS WIRE FROM OUT PC TO MEMORY AND B BUS IN DEMUX
+    wire [WIDTH-1:0] out_PC;
 
     // REGISTER OUTPUTS TO B BUS (OPC, TOS, CPP, LV, SP, PC, MDR , MBR, MBRU)
     wire [WIDTH-1:0] muxb_MDR_OUT, muxb_PC_OUT, muxb_MBR_OUT, muxb_MBRU_OUT, muxb_SP_OUT, muxb_LV_OUT, muxb_CPP_OUT, muxb_TOS_OUT, muxb_OPC_OUT;
 
-    // WIRE OUTPUT H TO A BUS
-    wire [WIDTH-1:0] wire_out_H;
-
-    wire sel_mode_MBR;
-
     // REGISTER FILE H, OPC, TOS, CPP, LV, SP, PC, MDR e MAR
-    register #( .WIDTH( WIDTH ) ) H (.clk(clk), .load(sel_bus_c[8]), .rst(rst[9]), .data_in(bus_c), .data_out(wire_out_H));
+    register #( .WIDTH( WIDTH ) ) H (.clk(clk), .load(sel_bus_c[8]), .rst(rst[9]), .data_in(bus_c), .data_out(bus_a));
 
     register #( .WIDTH( WIDTH ) ) OPC (.clk(clk), .load(sel_bus_c[7]) , .rst(rst[8]), .data_in(bus_c), .data_out(muxb_OPC_OUT)); 
     register #( .WIDTH( WIDTH ) ) TOS (.clk(clk), .load(sel_bus_c[6]), .rst(rst[7]), .data_in(bus_c), .data_out(muxb_TOS_OUT));
@@ -44,7 +43,7 @@ module registerFile #(
     register #( .WIDTH( WIDTH ) ) LV (.clk(clk), .load(sel_bus_c[4]), .rst(rst[5]), .data_in(bus_c), .data_out(muxb_LV_OUT));
     register #( .WIDTH( WIDTH ) ) SP (.clk(clk), .load(sel_bus_c[3]), .rst(rst[4]), .data_in(bus_c), .data_out(muxb_SP_OUT));
 
-    register #( .WIDTH( WIDTH ) ) PC (.clk(clk), .load(sel_bus_c[2]), .rst(rst[3]), .data_in(bus_c), .data_out(muxb_PC_OUT));
+    register #( .WIDTH( WIDTH ) ) PC (.clk(clk), .load(sel_bus_c[2]), .rst(rst[3]), .data_in(bus_c), .data_out(out_PC));
 
     register #( .WIDTH( WIDTH ) )
     MDR 
@@ -52,8 +51,8 @@ module registerFile #(
         .clk(clk), 
         .load(( sel_bus_c[1] || read) ? 1'b1 : 1'b0), 
         .rst(rst[2]), 
-        .data_in(in_mem_MDR), 
-        .data_out(out_mem_MDR)
+        .data_in(in_MDR), 
+        .data_out(out_MDR)
     );
 
     register #( .WIDTH( WIDTH ) ) MAR (.clk(clk), .load(sel_bus_c[0]), .rst(rst[1]) ,.data_in(bus_c), .data_out(memory_bus_out_MAR)); 
@@ -71,21 +70,30 @@ module registerFile #(
     );    
 
     // MUX TO KNOW WHO WILL CONTROLLER THE INPUT FROM MDR REGISTER    
-    always @(*) begin : MUX_controller_in_MDR
+    assign in_MDR = (read) ? memory_bus_in_MDR : bus_c;
 
-        casez({sel_bus_c[1], read})
-            2'bz1 : in_mem_MDR = bus_c;
-            2'b10 : in_mem_MDR = memory_bus_in_MDR;
-            default : in_mem_MDR = bus_c;
-        endcase
-    end
+    // DEMUX FROM OUT MDR TO MEMORY AND B BUS
+    assign memory_bus_out_MDR = (write) ? out_MDR : 'b0;
+    assign muxb_MDR_OUT = (!write) ? out_MDR : 'b0;
+    /*
+    always @(*) begin : DEMUX_controller_out_MDR
+        if (write)
+            memory_bus_out_MDR = out_MDR;
+        else
+            muxb_MDR_OUT = out_MDR;
+    end*/ 
 
-    // BUS FROM REGISTER MDR TO B BUS AND MEMORY
-    assign memory_bus_out_MDR = out_mem_MDR;
-    assign muxb_MDR_OUT = out_mem_MDR;
+    // DEMUX FROM OUT PC TO MEMORY AND B BUS
+    assign  memory_bus_out_PC = (fetch) ? out_PC : 'b0;
+    assign  muxb_PC_OUT = (!fetch) ? out_PC : 'b0;
+    /*
+    always @(*) begin : DEMUX_controller_out_PC
+        if (fetch)
+            memory_bus_out_PC = out_PC;
+        else
+            muxb_PC_OUT = out_PC;
+    end */
 
-    // BUS FROM REGISTER H TO ALU A 
-    assign bus_a = wire_out_H;
 
     always @(*) begin : decoder_output_registers_b_bus // (OPC,TOS,CPP,LV,SP,MBRU,MBR,PC,MDR) [8 -> 0]
 

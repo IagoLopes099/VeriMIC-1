@@ -1,3 +1,6 @@
+`ifndef _MEMORY_
+    `define _MEMORY_
+`endif 
 
 module registerFile_tb #(
     parameter WIDTH = 32,
@@ -6,16 +9,20 @@ module registerFile_tb #(
     registerFile_if.TEST regFileif
 );  
 
+    localparam MEMORY_SIZE = 536870912;
+    logic [WORD-1:0] memory_tb [MEMORY_SIZE]; // memory block RAM
+    logic [WIDTH-1:0] address;
+
     logic [WIDTH-1:0] regs [11]; // MAR, MDR, PC, MBR, MBRU, SP, LV, CPP, TOS, OPC, H
 
     logic [WORD-1:0] aux_word_MBR;
 
     // clk, bus_b, bus_a, memory_bus_out_MAR, memory_bus_out_MDR, memory_bus_out_PC,                -- INPUTS
     // rst, bus_c, sel_bus_b, sel_bus_c, write, read , memory_bus_in_MBR, memory_bus_in_MDR         -- OUTPUT
-    logic [WIDTH-1:0] exp_bus_b, exp_bus_a;
+    logic [WIDTH-1:0] exp_bus_b, exp_bus_a, exp_mem_MAR, exp_mem_out_MDR, exp_mem_out_PC;
 
-/*===========================================GOLDEN_MODELS================================================*/
-
+    logic write_tb, read_tb;
+    
 
     always @(posedge regFileif.clk) begin : golden_model_decoder_refence
         case (regFileif.sel_bus_b)
@@ -35,7 +42,23 @@ module registerFile_tb #(
         exp_bus_a <= regs[10]; // H
     end 
 
-/*===========================================TASKS================================================*/
+
+    always @(posedge regFileif.clk) begin : golden_model_memory_reference
+        if (regFileif.read && regFileif.sel_bus_b == 0) begin
+            exp_bus_b <= memory_tb[address : address+3];
+        end
+        else if (regFileif.write) begin
+            exp_mem_out_MDR <= regs[1];
+        end
+        else if (regFileif.fetch && regFileif.sel_bus_b == 2) begin
+            exp_bus_b[8:0] <= memory_tb[address];
+        end
+    end
+
+
+
+
+/*===========================================================================================*/
 
     task exp_bus_A;
         if(exp_bus_a !== regFileif.bus_a) begin
@@ -74,9 +97,42 @@ module registerFile_tb #(
 
     endtask
 
-/*===========================================TESTS================================================*/
 
-    initial begin        
+    task exp_memory; 
+        if  (exp_mem_MAR !== regFileif.memory_bus_out_MAR || exp_bus_b !== regFileif.bus_b) begin 
+            
+            $display("Error at a time : %0d", $time);
+
+            if (exp_mem_MAR !== regFileif.memory_bus_out_MAR) begin : CHECK_MAR
+                $display("memory_bus_out_MAR : %b", regFileif.memory_bus_out_MAR);
+                $display("And should be : %b", exp_mem_MAR);
+                $finish;
+            end
+
+            if(exp_bus_b !== regFileif.bus_b) begin
+                $display("Error at a time : %0d", $time);
+                $display("bus_B : %b, sel_bus_b : %b",regFileif.bus_b, regFileif.sel_bus_b);
+                $display("And should be : %b", exp_bus_b);
+                $finish;
+            end
+
+        end
+        else begin
+            $display("At a time : %0d, bus_B : %b, sel_bus_b : %b", $time, regFileif.bus_b, regFileif.sel_bus_b);
+            $display("At a time : %0d, Memory_out_MAR : %b", $time, egFileif.memory_bus_out_MAR);
+        end
+
+    endtask
+
+/*===========================================================================================*/
+
+    initial begin
+
+        
+        for (integer i = 0 ; i < MEMORY_SIZE ; i++) begin : Initialization_MEMORY
+            memory_tb[i] = $urandom;
+        end
+        
 
         for (integer i = 0; i < 11; i++) begin : Initialization_REGISTERS
             regs[i] = 0;
@@ -93,7 +149,7 @@ module registerFile_tb #(
 
         repeat (2) @(posedge regFileif.clk);
 
-        
+
         regFileif.rst = 10'b1111_111_111; // disable reset
 
         aux_word_MBR = $urandom;
@@ -139,6 +195,19 @@ module registerFile_tb #(
 
 
         repeat (100) begin
+            
+            `ifdef _MEMORY_
+            @(negedge regFileif.clk);
+
+            regFileif.bus_c = $urandom;
+            regFileif.sel_bus_c = 0;
+            @(negedge regFileif.clk);
+
+            regFileif.bus_c = $urandom;
+            regFileif.sel_bus_c = 2;
+            @(negedge regFileif.clk);
+
+            `endif
 
             @(negedge regFileif.clk);
             
@@ -146,7 +215,24 @@ module registerFile_tb #(
 
             @(negedge regFileif.clk);
 
-            exp_bus();
+            regFileif.read = $urandom_range(0,1);
+
+            @(negedge regFileif.clk);
+
+            exp_memory();
+            regFileif.write = $urandom_range(0,1);
+
+            @(negedge regFileif.clk);
+            
+            exp_memory();
+            regFileif.fetch = $urandom_range(0,1);
+
+            @(negedge regFileif.clk);
+
+            exp_memory();
+            //exp_bus_B();
+            //exp_bus_A();
+
         end
 
         $display("Test Passed");

@@ -9,7 +9,7 @@ interface registerFile_if #(
 );
 
     // memory signals and bus
-    logic write ,read;
+    logic write ,read, fetch;
     logic [WORD-1:0] memory_bus_in_MBR;
     logic [WIDTH-1:0] memory_bus_in_MDR;
     logic [WIDTH-1:0] memory_bus_out_MDR;
@@ -24,11 +24,11 @@ interface registerFile_if #(
 
     modport TEST (
         input clk, bus_b, bus_a, memory_bus_out_MAR, memory_bus_out_MDR, memory_bus_out_PC,
-        output rst, bus_c, sel_bus_b, sel_bus_c, write, read , memory_bus_in_MBR, memory_bus_in_MDR
+        output rst, bus_c, sel_bus_b, sel_bus_c, write, read, fetch, memory_bus_in_MBR, memory_bus_in_MDR
     ); 
 
     modport DUT (
-        input clk, rst, sel_bus_b, sel_bus_c, bus_c , write, read , memory_bus_in_MBR, memory_bus_in_MDR, 
+        input clk, rst, sel_bus_b, sel_bus_c, bus_c , write, read, fetch, memory_bus_in_MBR, memory_bus_in_MDR, 
         output bus_b, bus_a, memory_bus_out_MAR, memory_bus_out_MDR, memory_bus_out_PC
     );
 
