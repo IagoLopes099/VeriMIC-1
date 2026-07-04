@@ -1,11 +1,29 @@
-class our_test extends uvm_test;
 
-    `uvm_component_utils(our_test)
+class registerFileMem_test extends uvm_test;
+
+    `uvm_component_utils(registerFileMem_test)
 
     // CONSTRUCT 
-    function new (string name = "our_test", uvm_component parent = null);
+    function new (string name = "registerFileMem_test", uvm_component parent = null);
         super.new(name, parent);
-        
+        `uvm_info("TEST_CLASS", "Inside Constructor!", UVM_HIGH);
     endfunction
+
+    function void build_phase(uvm_phase phase);
+        super.build_phase();
+        `uvm_info("TEST_CLASS", "Build Phase!", UVM_HIGH);
+    endfunction
+
+    function void connect_phase(uvm_phase phase);
+        super.connect_phase();
+        `uvm_info("TEST_CLASS", "Connect Phase!", UVM_HIGH);
+    endfunction
+
+    task run_phase (uvm_phase phase)
+        super.run_phase(phase);
+
+        // logic
+    endtask
+
 
 endclass
