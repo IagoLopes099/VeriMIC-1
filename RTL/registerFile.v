@@ -13,6 +13,7 @@ module registerFile #(
     output [WIDTH-1:0] memory_bus_out_MDR,
     output [WIDTH-1:0] memory_bus_out_MAR,
     output [WIDTH-1:0] memory_bus_out_PC,
+    output [WORD-1:0] memory_bus_out_MBR, // SPECIAL OUTPUT TO MPC
 
     // decoder and selector (B AND C BUS)
     input wire clk,
@@ -75,25 +76,10 @@ module registerFile #(
     // DEMUX FROM OUT MDR TO MEMORY AND B BUS
     assign memory_bus_out_MDR = (write) ? out_MDR : 'b0;
     assign muxb_MDR_OUT = (!write) ? out_MDR : 'b0;
-    /*
-    always @(*) begin : DEMUX_controller_out_MDR
-        if (write)
-            memory_bus_out_MDR = out_MDR;
-        else
-            muxb_MDR_OUT = out_MDR;
-    end*/ 
 
     // DEMUX FROM OUT PC TO MEMORY AND B BUS
     assign  memory_bus_out_PC = (fetch) ? out_PC : 'b0;
     assign  muxb_PC_OUT = (!fetch) ? out_PC : 'b0;
-    /*
-    always @(*) begin : DEMUX_controller_out_PC
-        if (fetch)
-            memory_bus_out_PC = out_PC;
-        else
-            muxb_PC_OUT = out_PC;
-    end */
-
 
     always @(*) begin : decoder_output_registers_b_bus // (OPC,TOS,CPP,LV,SP,MBRU,MBR,PC,MDR) [8 -> 0]
 
@@ -110,5 +96,7 @@ module registerFile #(
         endcase
 
     end
+
+    assign memory_bus_out_MBR = muxb_MBR_OUT[8:0];
 
 endmodule
