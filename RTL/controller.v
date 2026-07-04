@@ -35,7 +35,7 @@ module controller #(
     input wire [WORD-1:0] memory_bus_in_MBR, 
     input wire [WIDTH-1:0] memory_bus_in_MDR,
     output [WIDTH-1:0] memory_bus_out_MDR,
-    output [WIDTH-1:0] memory_bus_out_MAR,
+    output [WIDTH-1:0] memory_bus_out_MAR
 );
     // intermediate wires
     wire [WIDTH-1:0]    alu_shifter_bus,
