@@ -22,7 +22,7 @@ module controller #(
     parameter WIDTH_MICROINSTRUCTION = 36
 )(
     input wire clk,
-
+    input wire [9:0] rst,
     
     // MICROINSTRUCTION CONTROLLER
     input wire [WIDTH_MICROINSTRUCTION-1:0] microinstruction,
@@ -36,7 +36,6 @@ module controller #(
     input wire [WIDTH-1:0] memory_bus_in_MDR,
     output [WIDTH-1:0] memory_bus_out_MDR,
     output [WIDTH-1:0] memory_bus_out_MAR,
-    output [WIDTH-1:0] memory_bus_out_SP
 );
     // intermediate wires
     wire [WIDTH-1:0]    alu_shifter_bus,
@@ -57,7 +56,6 @@ module controller #(
     wire [2:0] JAM;
     assign JAM = microinstruction[26:24];
 
-    reg [9:0] rst = 9'b000_000_000;
 
     registerFile #( .WIDTH( WIDTH ), .WORD( WORD )) 
     registerFile_inst
