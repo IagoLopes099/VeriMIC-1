@@ -9,7 +9,7 @@ module control_store #(
 );
 
     // memory rom that will guard the microprogram in bits format
-    logic [MICROINSTRUCTION_WIDTH-1:0] rom [0:511];  
+    reg [MICROINSTRUCTION_WIDTH-1:0] rom [0:511];  
 
     initial $readmemb(MEM_FILE, rom);
 

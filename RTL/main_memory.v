@@ -12,18 +12,18 @@ module main_memory #(
     input wire [WIDTH-1:0] mdr_in,
 
     output reg [WIDTH-1:0] mdr_out,
-    output reg [WORD-1:0] mbr,
+    output reg [WORD-1:0] mbr
 
 );
     // linear array of bytes 0 to 536870911
-    wire [WORD-1:0] ram [0:((2**WIDTH)/WORD)-1];
+    reg [WORD-1:0] ram [0:((2**WIDTH)/WORD)-1];
 
     initial $readmemh(MEM_FILE, ram);
 
     wire [WIDTH-1:0] byte_addr;
     assign byte_addr = mar << 2;
 
-    // little endian
+    // big endian
     always @(posedge clk) begin
         if(read) begin
             mdr_out <= {ram[byte_addr],

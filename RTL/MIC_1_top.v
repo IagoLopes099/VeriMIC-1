@@ -31,7 +31,7 @@ module MIC_1_top(
         .mar(bus_MAR_ram),
         .mdr_in(bus_MDR_ram_in),
         .mdr_out(bus_MDR_ram_out),
-        .mbr(bus_MBR_ram),
+        .mbr(bus_MBR_ram)
     );
 
 

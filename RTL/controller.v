@@ -19,13 +19,13 @@ change as necessary
 module controller #(
     parameter WIDTH = 32,
     parameter WORD = 8,
-    parameter WIDTH_MICROINSTRUCTION = 36
+    parameter MICROINSTRUCTION_WIDTH = 36
 )(
     input wire clk,
     input wire [9:0] rst,
     
     // MICROINSTRUCTION CONTROLLER
-    input wire [WIDTH_MICROINSTRUCTION-1:0] microinstruction,
+    input wire [MICROINSTRUCTION_WIDTH-1:0] microinstruction,
     output [8:0] MPC,
 
 
