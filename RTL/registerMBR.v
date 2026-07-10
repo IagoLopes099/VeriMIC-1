@@ -6,22 +6,22 @@ module registerMBR #(
     input wire clk,
     input wire load, 
     input wire rst,
-    output reg [WIDTH-1:0] data_out1 , data_out2
+    output reg [WIDTH-1:0] MBR_out , MBRU_out
 );
 
     always @(posedge clk) begin
 
         if (!rst) begin // fills all with 0s
-            data_out1 <= {WIDTH{1'b0}};
-            data_out2 <= {WIDTH{1'b0}}; 
+            MBR_out <= {WIDTH{1'b0}};
+            MBRU_out <= {WIDTH{1'b0}}; 
         end
         else if (load) begin // put input properly into the ouput 
-            data_out1 <= {{WIDTH-WORD{1'b0}},data_in}; // fills the remaining bits with 0s
-            data_out2 <= {{WIDTH-WORD{data_in[WORD-1]}},data_in}; // fills the remaining bits with the MSB from word
+            MBR_out <= {{WIDTH-WORD{data_in[WORD-1]}},data_in}; // fills the remaining bits with the MSB from word
+            MBRU_out <= {{WIDTH-WORD{1'b0}},data_in}; // fills the remaining bits with 0s
         end
         else begin// hold the old value
-            data_out1 <= data_out1;
-            data_out2 <= data_out2;
+            MBR_out <= MBR_out;
+            MBRU_out <= MBRU_out;
         end
 
     end

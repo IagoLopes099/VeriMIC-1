@@ -3,7 +3,7 @@
 `include "shifter.v"
 
 /* form of word 36 ->   [9] bits for NEXT_ADDRESS
-                        [3] bits for JAM (JAMZ, JAMN, JMPC)
+                        [3] bits for JAM (JMPC, JAMN, JAMZ)
                         [2] bits for shifter
                         [6] bits for ALU
                         [9] bits for C bus
@@ -55,7 +55,7 @@ module controller #(
     assign NEXT_ADDRESS = microinstruction[35:27];
 
     wire [2:0] JAM;
-    assign JAM = microinstruction[26:24];
+    assign JAM = microinstruction[26:24]; // JMPC, JAMN, JAMZ
 
 
     registerFile #( .WIDTH( WIDTH ), .WORD( WORD )) 
@@ -106,14 +106,9 @@ module controller #(
         .shifter_out(shifter_registerFile_bus)
     );
 
-    always @(posedge clk) begin
-        is_neg <= alu_out_flag_N;
-        is_zero <= alu_out_flag_Z;
-    end
-
     // output from flip_flops flags alu, to MPC  
-    assign MPC[8] = (is_zero & JAM[2]) | (is_neg & JAM[1]) | NEXT_ADDRESS[8];
-    assign MPC[7:0] = NEXT_ADDRESS[7:0] | (JAM[0] ? memory_bus_out_MBR_MPC : 0);
+    assign MPC[8] = (alu_out_flag_Z & JAM[0]) | (alu_out_flag_N & JAM[1]) | NEXT_ADDRESS[8];
+    assign MPC[7:0] = NEXT_ADDRESS[7:0] | (JAM[2] ? memory_bus_out_MBR_MPC : 0);
 
 
 endmodule

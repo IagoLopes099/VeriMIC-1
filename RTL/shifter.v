@@ -2,7 +2,7 @@ module shifter #(
     parameter WIDTH = 32
 )( 
     input wire clk,
-    input wire [WIDTH-1:0] shifter_in,
+    input wire signed [WIDTH-1:0] shifter_in,
     input wire sll8, sra1,
     output [WIDTH-1:0] shifter_out
 );

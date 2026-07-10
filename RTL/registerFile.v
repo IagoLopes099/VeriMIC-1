@@ -66,8 +66,8 @@ module registerFile #(
         .rst(rst[0]),
         .load(1'b1), // ever will be 1, because it's only path to the memory for word
         .data_in(memory_bus_in_MBR),
-        .data_out1(muxb_MBR_OUT),
-        .data_out2(muxb_MBRU_OUT)
+        .MBR_out(muxb_MBR_OUT),
+        .MBRU_out(muxb_MBRU_OUT)
     );    
 
     // MUX TO KNOW WHO WILL CONTROLLER THE INPUT FROM MDR REGISTER    
@@ -75,11 +75,11 @@ module registerFile #(
 
     // DEMUX FROM OUT MDR TO MEMORY AND B BUS
     assign memory_bus_out_MDR = (write) ? out_MDR : 'b0;
-    assign muxb_MDR_OUT = (!write) ? out_MDR : 'b0;
+    assign muxb_MDR_OUT = out_MDR;
 
     // DEMUX FROM OUT PC TO MEMORY AND B BUS
     assign  memory_bus_out_PC = (fetch) ? out_PC : 'b0;
-    assign  muxb_PC_OUT = (!fetch) ? out_PC : 'b0;
+    assign  muxb_PC_OUT = out_PC;
 
     always @(*) begin : decoder_output_registers_b_bus // (OPC,TOS,CPP,LV,SP,MBRU,MBR,PC,MDR) [8 -> 0]
 

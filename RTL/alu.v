@@ -33,6 +33,7 @@ module alu #(
     end
 
     always @(*) begin : alu_logic_operations
+        overflow = 1'b0;
 
         casez({sel[0], sel[1]}) 
 
