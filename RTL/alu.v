@@ -20,7 +20,6 @@ module alu #(
 
     assign is_zero = ~|alu_out;         // NOR (reduction)
     assign is_neg = alu_out[WIDTH-1];   // MSB 
-    assign overflow = temporary_sum[WIDTH]; // overflow flag
 
 
     always @(*) begin : inputs_logic
@@ -52,6 +51,7 @@ module alu #(
             ADD : begin 
                 temporary_sum = a + b + inc;
                 alu_out = temporary_sum[WIDTH-1:0];
+                overflow = temporary_sum[WIDTH];
             end 
         endcase 
 
