@@ -2,6 +2,7 @@
 module main_memory #(
     parameter WIDTH = 32,
     parameter WORD = 8,
+    parameter ADDR_WIDTH = 18, // 256 KB
     parameter MEM_FILE = "../Memory/main_memory.mem"
 ) (
     input wire clk,
@@ -15,13 +16,18 @@ module main_memory #(
     output reg [WORD-1:0] mbr
 
 );
-    // linear array of bytes 0 to 536870911
-    reg [WORD-1:0] ram [0:((2**WIDTH)/WORD)-1];
+    // linear array of bytes
+    reg [WORD-1:0] ram [0:(2**ADDR_WIDTH)-1];
 
-    initial $readmemh(MEM_FILE, ram);
+    integer i;
+    initial begin
+        for (i = 0; i < 2**ADDR_WIDTH; i = i + 1) ram[i] = 8'h00;
+        $readmemh(MEM_FILE, ram);
+    end
 
-    wire [WIDTH-1:0] byte_addr;
-    assign byte_addr = mar << 2;
+    
+    wire [ADDR_WIDTH-1:0] byte_addr = (mar << 2) [ADDR_WIDTH-1:0]; 
+    wire [ADDR_WIDTH-1:0] pc_addr = pc[ADDR_WIDTH-1:0];
 
     // big endian
     always @(posedge clk) begin
@@ -40,7 +46,7 @@ module main_memory #(
         end
 
         if(fetch) begin
-            mbr <= ram[pc];
+            mbr <= ram[pc_addr];
         end
     end
 
